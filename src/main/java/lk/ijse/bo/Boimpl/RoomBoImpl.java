@@ -1,5 +1,6 @@
-package lk.ijse.bo;
+package lk.ijse.bo.Boimpl;
 
+import lk.ijse.bo.RoomBO;
 import lk.ijse.dao.RoomDAO;
 import lk.ijse.dao.custom.DAOFactory;
 import lk.ijse.dao.custom.DAOTypes;

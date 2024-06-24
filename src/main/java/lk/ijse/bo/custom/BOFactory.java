@@ -1,4 +1,7 @@
-package lk.ijse.bo;
+package lk.ijse.bo.custom;
+
+import lk.ijse.bo.Boimpl.RoomBoImpl;
+import lk.ijse.bo.Boimpl.VehicleBoImpl;
 
 public class BOFactory {
 
@@ -18,6 +21,8 @@ public class BOFactory {
         switch (boTypes){
             case ROOM :
                 return new RoomBoImpl();
+            case VEHICLE:
+                return new VehicleBoImpl();
             default:
                 return null;
         }

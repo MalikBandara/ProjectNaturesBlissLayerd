@@ -15,11 +15,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.bo.VehicleBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dao.VehicleDAO;
 import lk.ijse.dto.Employee;
-import lk.ijse.dto.Vehicle;
+import lk.ijse.dto.VehicleDTO;
 import lk.ijse.dto.tm.VehicleTm;
 import lk.ijse.dao.impl.EmployeeRepo;
-import lk.ijse.dao.impl.VehicleRepo;
+import lk.ijse.dao.impl.VehicleDaoImpl;
+import lk.ijse.entity.Vehicle;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -73,6 +78,10 @@ public class VehicleFormController {
 
     @FXML
     private Button vehsave;
+
+    //VehicleDAO vehicleDAO = new VehicleDaoImpl();
+
+    VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.VEHICLE);
 
     @FXML
     void backOnAction(ActionEvent event) {
@@ -131,7 +140,7 @@ public class VehicleFormController {
 
     private void generateNewVehicleId() {
         try {
-            String lastId = VehicleRepo.getLastVehicleId();
+            String lastId = vehicleBO.getLastVehicleId();
             String newId = generateNextVehicleId(lastId);
             vid.setText(newId);
         } catch (SQLException e) {
@@ -146,8 +155,8 @@ public class VehicleFormController {
     private void loadAllVehicles() {
         try {
             ObservableList<VehicleTm> obList = FXCollections.observableArrayList();
-            List<Vehicle> vehicleList = VehicleRepo.getAllVehicles();
-            for (Vehicle vehicle : vehicleList) {
+            List<VehicleDTO> vehicleList = vehicleBO.getAllVehicles();
+            for (VehicleDTO vehicle : vehicleList) {
                 obList.add(new VehicleTm(vehicle.getVehicleId(), vehicle.getNumberOfSeats(), vehicle.getStatus(), vehicle.getEmployeeId()));
             }
             tblVehicle.setItems(obList);
@@ -204,7 +213,7 @@ public class VehicleFormController {
 
         if (isValied()){
             try {
-                boolean isDeleted = VehicleRepo.deleteVehicle(vehicleid);
+                boolean isDeleted = vehicleBO.deleteVehicle(vehicleid);
                 if(isDeleted) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Vehicle deleted successfully!").show();
                     loadAllVehicles();
@@ -234,9 +243,9 @@ public class VehicleFormController {
                 return; // Exit the method if any field is empty
             }
 
-            Vehicle vehicle = new Vehicle(vehicleId, status, numberOfSeats, empId);
+            VehicleDTO vehicle = new VehicleDTO(vehicleId, status, numberOfSeats, empId);
             try {
-                boolean isSaved = VehicleRepo.saveVehicle(vehicle);
+                boolean isSaved = vehicleBO.saveVehicle(vehicle);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Vehicle saved successfully!").show();
                     loadAllVehicles();
@@ -273,9 +282,9 @@ public class VehicleFormController {
                 return; // Exit the method if any field is empty
             }
 
-            Vehicle vehicle = new Vehicle(vehicleId, status, numberOfSeats, empId);
+            VehicleDTO vehicle = new VehicleDTO(vehicleId, status, numberOfSeats, empId);
             try {
-                boolean isUpdated = VehicleRepo.updateVehicle(vehicle);
+                boolean isUpdated = vehicleBO.updateVehicle(vehicle);
                 if (isUpdated) {
                     new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                     loadAllVehicles();
@@ -303,7 +312,7 @@ public class VehicleFormController {
         try {
             String vehicleId = vid.getText();
 
-            Vehicle vehicle = VehicleRepo.searchVehicleById(vehicleId);
+            VehicleDTO vehicle = vehicleBO.searchVehicleById(vehicleId);
             if (vehicle != null) {
                 vid.setText(vehicle.getVehicleId());
                 status.setText(vehicle.getStatus());

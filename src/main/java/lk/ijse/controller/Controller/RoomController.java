@@ -15,13 +15,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.bo.BOFactory;
-import lk.ijse.bo.BOTypes;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
 import lk.ijse.bo.RoomBO;
 import lk.ijse.dto.RoomDTO;
 import lk.ijse.dto.tm.RoomTm;
-import lk.ijse.dao.impl.RoomDaoImpl;
-import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 

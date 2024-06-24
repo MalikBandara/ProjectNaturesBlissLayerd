@@ -1,4 +1,4 @@
-package lk.ijse.bo;
+package lk.ijse.bo.custom;
 
 public interface SpuerBO {
 }

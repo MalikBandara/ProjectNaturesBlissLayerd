@@ -1,13 +1,11 @@
 package lk.ijse.bo;
 
-import javafx.scene.control.Alert;
-import lk.ijse.db.DBConnection;
+import lk.ijse.bo.custom.SpuerBO;
 import lk.ijse.dto.Booking;
 import lk.ijse.dto.RoomDTO;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface RoomBO extends SpuerBO {

@@ -2,6 +2,7 @@ package lk.ijse.dao.custom;
 
 
 import lk.ijse.dao.impl.RoomDaoImpl;
+import lk.ijse.dao.impl.VehicleDaoImpl;
 
 public class DAOFactory {
 
@@ -21,6 +22,8 @@ public class DAOFactory {
         switch (daoTypes){
             case ROOM :
                 return new RoomDaoImpl();
+            case VEHICLE:
+                return new VehicleDaoImpl();
             default:
                 return null;
 

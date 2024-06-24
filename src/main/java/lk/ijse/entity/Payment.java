@@ -1,4 +1,4 @@
-package lk.ijse.dto;
+package lk.ijse.entity;
 
 
 
@@ -16,7 +16,7 @@ public class Payment {
     }
 
     // Constructor with all fields
-    public Payment(String payId, String amount,String method, String paidDate, String status ) {
+    public Payment(String payId, String amount, String method, String paidDate, String status ) {
         this.payId = payId;
         this.amount = amount;
         this.status = status;

@@ -1,5 +1,5 @@
 package lk.ijse.dao.custom;
 
 public enum DAOTypes {
-    CLIENT ,ROOM,VEHICLE
+    CLIENT ,ROOM,VEHICLE,PAYMENT
 }

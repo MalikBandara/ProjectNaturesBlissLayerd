@@ -21,6 +21,7 @@ import lk.ijse.dto.*;
 import lk.ijse.dto.Package;
 import lk.ijse.dto.tm.BookingTm;
 import lk.ijse.dto.tm.RoomTm;
+import lk.ijse.entity.Payment;
 import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
@@ -124,6 +125,8 @@ public class BookingFormController {
     private ComboBox<String> roomcmb;
 
     RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
+
+    PaymentDaoImpl PaymentDaoImpl = new  PaymentDaoImpl();
 
 
     @FXML
@@ -389,7 +392,7 @@ public class BookingFormController {
         String paymentId = cmbPayID.getValue();
 
         try {
-            Payment payment = PaymentRepo.searchPaymentById(paymentId);
+            Payment payment = PaymentDaoImpl.search(paymentId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -399,7 +402,7 @@ public class BookingFormController {
     private void getPaymentId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> paymentIdList = PaymentRepo.getId();
+            List<String> paymentIdList = PaymentDaoImpl.getIds();
 
             for (String employeeId : paymentIdList) {
                 obList.add(employeeId);

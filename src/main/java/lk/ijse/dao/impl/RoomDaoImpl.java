@@ -92,11 +92,6 @@ public class RoomDaoImpl implements RoomDAO {
         return mtIDList;
     }
 
-    public  boolean updateRooms(List<Booking> odList) {
-
-    return  false;
-    }
-
     public  String getLastId() throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT Room_id FROM Room ORDER BY Room_id DESC LIMIT 1");
 

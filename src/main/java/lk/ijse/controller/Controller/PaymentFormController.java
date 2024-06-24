@@ -15,9 +15,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dto.Payment;
+import lk.ijse.bo.PaymentBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dto.PaymentDTO;
 import lk.ijse.dto.tm.PaymentTm;
-import lk.ijse.dao.impl.PaymentRepo;
+import lk.ijse.dao.impl.PaymentDaoImpl;
+import lk.ijse.entity.Payment;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -80,12 +84,16 @@ public class PaymentFormController {
     @FXML
     private TableView<PaymentTm> tblPayment;
 
+
+
+    PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PAYMENT);
+
     @FXML
     void PidOnAction(ActionEvent event) {
         try {
             String paymentIdText = paymentId.getText();
 
-            Payment payment = PaymentRepo.searchPaymentById(paymentIdText);
+            PaymentDTO payment = paymentBO.searchPaymentById(paymentIdText);
             if (payment != null) {
                 paymentId.setText(payment.getPayId());
                 Amount.setText(String.valueOf(payment.getAmount()));
@@ -161,7 +169,7 @@ public class PaymentFormController {
 
         if (isValied()){
             try {
-                boolean isDeleted = PaymentRepo.deletePayment(paymentIdText);
+                boolean isDeleted = paymentBO.deletePayment(paymentIdText);
                 if(isDeleted) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Payment deleted!").show();
                     loadAllPayment();
@@ -188,8 +196,8 @@ public class PaymentFormController {
         ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Payment> PaymentList = PaymentRepo.getAllPayment();
-            for(Payment Payment : PaymentList){
+            List<PaymentDTO> PaymentList = paymentBO.getAllPayment();
+            for(PaymentDTO Payment : PaymentList){
                 PaymentTm paymentTm = new PaymentTm(
                         Payment.getPayId(),
                         Payment.getAmount(),
@@ -223,13 +231,13 @@ public class PaymentFormController {
         String paidDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String Method = method.getText();
         if (isValied()){
-            Payment payment = new Payment(id, amount, Status, paidDate, Method);
+            PaymentDTO payment = new PaymentDTO(id, amount, Status, paidDate, Method);
 
             try {
                 if (id.isEmpty() || amount.isEmpty() || Status.isEmpty() || paidDate.isEmpty() || Method.isEmpty()) {
                     new Alert(Alert.AlertType.INFORMATION, "Empty Fields! Try again").show();
                 } else {
-                    boolean isSaved = PaymentRepo.savePayment(payment);
+                    boolean isSaved = paymentBO.savePayment(payment);
                     if (isSaved) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Payment saved successfully!").show();
                         loadAllPayment();
@@ -258,9 +266,9 @@ public class PaymentFormController {
         String method = this.method.getText();
 
         if (isValied()){
-            Payment payment = new Payment(id, amount, method, paidDate, status);
+            PaymentDTO payment = new PaymentDTO(id, amount, method, paidDate, status);
             try {
-                boolean isUpdated = PaymentRepo.updatePayment(payment);
+                boolean isUpdated = paymentBO.updatePayment(payment);
                 if(isUpdated) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Payment updated successfully!").show();
                     loadAllPayment();
@@ -318,7 +326,7 @@ public class PaymentFormController {
 
     private void generateNewPaymentId() {
         try {
-            String lastId = PaymentRepo.getLastPaymentId();
+            String lastId = paymentBO.getLastPaymentId();
             String newId = generateNextPaymentId(lastId);
             paymentId.setText(newId);
         } catch (SQLException e) {

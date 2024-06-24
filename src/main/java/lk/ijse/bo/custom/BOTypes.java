@@ -1,5 +1,5 @@
 package lk.ijse.bo.custom;
 
 public enum BOTypes {
-    ROOM,VEHICLE
+    ROOM,VEHICLE,PAYMENT
 }

@@ -68,5 +68,10 @@ public class GuestBOImpl implements GuestBO {
 
     }
 
+    @Override
+    public int getGuestCount() throws SQLException {
+        return guestDAO.getGuestCount();
+    }
+
 
 }

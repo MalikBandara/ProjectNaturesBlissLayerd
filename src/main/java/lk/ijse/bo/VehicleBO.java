@@ -19,4 +19,6 @@ public interface VehicleBO  extends SpuerBO {
     public  VehicleDTO searchVehicleById(String vehicleId) throws SQLException;
 
     public  String getLastVehicleId() throws SQLException ;
+
+    int getVehicleCount() throws SQLException;
 }

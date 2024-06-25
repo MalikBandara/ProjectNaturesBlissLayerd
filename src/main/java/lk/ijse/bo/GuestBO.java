@@ -19,4 +19,6 @@ public interface GuestBO extends SpuerBO {
     public List<String> getID() throws SQLException ;
     public  boolean updateGuest(List<Booking> bookingList) ;
     public  GuestDTO searchGuesttById(String identity) throws SQLException ;
+
+    int getGuestCount() throws SQLException;
 }

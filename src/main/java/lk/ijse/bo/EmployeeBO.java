@@ -13,5 +13,5 @@ public interface EmployeeBO extends SpuerBO {
     public List<EmployeeDTO> getAllEmployees() throws SQLException ;
     public  List<String> getAllEmployeeIds() throws SQLException ;
     public  String getLastEmployeeId() throws SQLException ;
-
+    public int getEmpCount() throws SQLException;
 }

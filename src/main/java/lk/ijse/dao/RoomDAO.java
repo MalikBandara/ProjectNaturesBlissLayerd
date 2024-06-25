@@ -11,4 +11,5 @@ public interface RoomDAO extends CrudDAO<Room> {
     public  boolean updateRoomStatus(String roomId, String status) throws SQLException ;
 
 
+    int getRoomsCount() throws SQLException;
 }

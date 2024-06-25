@@ -68,4 +68,9 @@ public class VehicleBoImpl implements VehicleBO {
 
         return  vehicleDAO.getLastId();
     }
+
+    @Override
+    public int getVehicleCount() throws SQLException {
+        return vehicleDAO.getVehicleCount();
+    }
 }

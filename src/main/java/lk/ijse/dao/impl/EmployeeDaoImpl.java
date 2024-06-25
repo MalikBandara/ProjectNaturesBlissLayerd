@@ -104,4 +104,15 @@ public class EmployeeDaoImpl implements EmployeeDAO {
             return null;
         }
     }
+
+    @Override
+    public int getEmpCount() throws SQLException {
+
+        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS Emp_count FROM Employee");
+
+        if(resultSet.next()) {
+            return resultSet.getInt("Emp_count");
+        }
+        return 0;
+    }
 }

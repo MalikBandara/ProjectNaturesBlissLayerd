@@ -86,4 +86,10 @@ public class RoomBoImpl implements RoomBO {
         return roomDAO.getLastId();
     }
 
+    @Override
+    public int getRoomsCount() throws SQLException {
+        int roomsCount = roomDAO.getRoomsCount();
+        return roomsCount;
+    }
+
 }

@@ -31,6 +31,16 @@ public class RoomDaoImpl implements RoomDAO {
         return SQLUtil.execute("UPDATE Room SET status = ? WHERE Room_id = ?",roomId,status);
     }
 
+    @Override
+    public int getRoomsCount() throws SQLException {
+
+         ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS Room_count FROM Room");
+        if(resultSet.next()) {
+            return resultSet.getInt("Room_count");
+        }
+        return 0;
+    }
+
     public  boolean update(Room entity) throws SQLException {
 
         return SQLUtil.execute("UPDATE Room SET Room_number = ?, Type = ?, Rate = ?, Status = ? WHERE Room_id = ?",

@@ -79,4 +79,13 @@ public class VehicleDaoImpl implements VehicleDAO {
             return null;
         }
     }
+
+    @Override
+    public int getVehicleCount() throws SQLException {
+        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS Vehicle_count FROM Vehicle");
+        if(resultSet.next()) {
+            return resultSet.getInt("Vehicle_count");
+        }
+        return 0;
+    }
 }

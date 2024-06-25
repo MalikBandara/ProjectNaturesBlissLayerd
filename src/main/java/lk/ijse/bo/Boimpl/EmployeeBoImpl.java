@@ -80,4 +80,11 @@ public class EmployeeBoImpl implements EmployeeBO {
 
         return employeeDAO.getLastId();
     }
+
+    @Override
+    public int getEmpCount() throws SQLException {
+        int empCount = employeeDAO.getEmpCount();
+        return empCount;
+
+    }
 }

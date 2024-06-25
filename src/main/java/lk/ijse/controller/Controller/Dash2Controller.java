@@ -15,7 +15,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lk.ijse.bo.EmployeeBO;
+import lk.ijse.bo.GuestBO;
+import lk.ijse.bo.RoomBO;
+import lk.ijse.bo.VehicleBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
 import lk.ijse.calender.Main;
+import lk.ijse.dao.GuestDAO;
+import lk.ijse.dao.custom.DAOFactory;
+import lk.ijse.dao.custom.DAOTypes;
 import lk.ijse.db.DBConnection;
 
 import java.io.IOException;
@@ -85,22 +94,19 @@ public class Dash2Controller implements Initializable {
     private int empCount;
 
 
+    GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
+    VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.VEHICLE);
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.EMPLOYEE);
+
+    RoomBO roomBO = (RoomBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.ROOM);
 
     private void setEmpCount(int empCount) {
         lblEmployeecount.setText(String.valueOf(empCount));
     }
 
     private int getEmpCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS Emp_count FROM Employee";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-        if(resultSet.next()) {
-            return resultSet.getInt("Emp_count");
-        }
-        return 0;
+        return employeeBO.getEmpCount();
 
     }
 
@@ -110,16 +116,8 @@ public class Dash2Controller implements Initializable {
     }
 
     private int getRoomCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS Room_count FROM Room";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-        if(resultSet.next()) {
-            return resultSet.getInt("Room_count");
-        }
-        return 0;
+        return roomBO.getRoomsCount();
 
 
     }
@@ -129,16 +127,7 @@ public class Dash2Controller implements Initializable {
     }
 
     private int getVehicleCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS Vehicle_count FROM Vehicle";
-
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-        if(resultSet.next()) {
-            return resultSet.getInt("Vehicle_count");
-        }
-        return 0;
+        return vehicleBO.getVehicleCount();
 
     }
 
@@ -148,16 +137,9 @@ public class Dash2Controller implements Initializable {
     }
 
     private int getGuestCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS Guest_count FROM Guest";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+        return guestBO.getGuestCount();
 
-        if(resultSet.next()) {
-            return resultSet.getInt("Guest_count");
-        }
-        return 0;
     }
 
     @Override

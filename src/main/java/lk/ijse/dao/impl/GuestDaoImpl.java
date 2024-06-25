@@ -130,6 +130,15 @@ public class GuestDaoImpl implements GuestDAO {
         return null;
     }
 
+    @Override
+    public int getGuestCount() throws SQLException {
+         ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS Guest_count FROM Guest");
+        if(resultSet.next()) {
+            return resultSet.getInt("Guest_count");
+        }
+        return 0;
+    }
+
     public  boolean updateGuest(List<Booking> bookingList) {
 
         return true;

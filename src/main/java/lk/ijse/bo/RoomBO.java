@@ -18,4 +18,5 @@ public interface RoomBO extends SpuerBO {
     public  List<String> getIds() throws SQLException ;
     public  String getLastRoomId() throws SQLException ;
 
+    int getRoomsCount() throws SQLException;
 }

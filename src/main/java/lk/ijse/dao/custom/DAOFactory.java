@@ -1,10 +1,7 @@
 package lk.ijse.dao.custom;
 
 
-import lk.ijse.dao.impl.GuestDaoImpl;
-import lk.ijse.dao.impl.PaymentDaoImpl;
-import lk.ijse.dao.impl.RoomDaoImpl;
-import lk.ijse.dao.impl.VehicleDaoImpl;
+import lk.ijse.dao.impl.*;
 
 public class DAOFactory {
 
@@ -30,6 +27,8 @@ public class DAOFactory {
                 return new PaymentDaoImpl();
             case GUEST:
                 return new GuestDaoImpl();
+            case PACKAGE:
+                return new PackageDaoImpl();
             default:
                 return null;
 

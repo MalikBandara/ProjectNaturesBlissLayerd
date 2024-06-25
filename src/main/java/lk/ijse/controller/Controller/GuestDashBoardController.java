@@ -16,9 +16,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dto.Package;
+import lk.ijse.bo.PackageBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dto.PackageDTO;
 import lk.ijse.dto.tm.PackageTm;
-import lk.ijse.dao.impl.PackageRepo;
+import lk.ijse.dao.impl.PackageDaoImpl;
+import lk.ijse.entity.Package;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -46,6 +50,9 @@ public class GuestDashBoardController {
 
     @FXML
     private Button btnLogOUt;
+
+    //PackageDaoImpl PackageDaoImpl = new PackageDaoImpl();
+    PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
 
     @FXML
     void goOnAction(ActionEvent event) {
@@ -91,8 +98,8 @@ public class GuestDashBoardController {
         ObservableList<PackageTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Package> PackageList = PackageRepo.getAllpackages();
-            for(Package Package : PackageList){
+            List<PackageDTO> PackageList = packageBO.getAllpackages();
+            for(PackageDTO Package : PackageList){
                 PackageTm cusTm = new PackageTm(
                         Package.getPackageId(),
                         Package.getName(),

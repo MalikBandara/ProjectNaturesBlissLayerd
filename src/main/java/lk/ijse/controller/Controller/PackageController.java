@@ -15,9 +15,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dto.Package;
+import lk.ijse.bo.PackageBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dao.PackageDAO;
+import lk.ijse.dto.PackageDTO;
 import lk.ijse.dto.tm.PackageTm;
-import lk.ijse.dao.impl.PackageRepo;
+import lk.ijse.dao.impl.PackageDaoImpl;
+import lk.ijse.entity.Package;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -75,6 +80,11 @@ public class PackageController {
     @FXML
     private TextField txtPrice;
 
+
+    //PackageDAO PackageDaoImpl =new PackageDaoImpl();
+
+    PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
+
     public void initialize(){
         setCellValueFactory();
         loadAllPackage();
@@ -85,8 +95,8 @@ public class PackageController {
         ObservableList<PackageTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Package> PackageList = PackageRepo.getAllpackages();
-            for(Package Package : PackageList){
+            List<PackageDTO> PackageList = packageBO.getAllpackages();
+            for(PackageDTO Package : PackageList){
                 PackageTm cusTm = new PackageTm(
                         Package.getPackageId(),
                         Package.getName(),
@@ -104,7 +114,7 @@ public class PackageController {
 
     private void generateNewPackageId() {
         try {
-            String lastId = PackageRepo.getLastPackageId();
+            String lastId = packageBO.getLastPackageId();
             String newId = generateNextPackageId(lastId);
             txtPackageId.setText(newId);
         } catch (SQLException e) {
@@ -188,7 +198,7 @@ public class PackageController {
 
         if (isValied()){
             try {
-                boolean isDeleted = PackageRepo.deletePackage(packageId);
+                boolean isDeleted = packageBO.deletePackage(packageId);
                 if(isDeleted) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Package deleted!").show();
                     loadAllPackage();
@@ -219,9 +229,9 @@ public class PackageController {
 
             double price = Double.parseDouble(priceText);
 
-            Package packagee = new Package(packageId, packageName, description, price);
+            PackageDTO packagee = new PackageDTO(packageId, packageName, description, price);
             try {
-                boolean isSaved = PackageRepo.savePackage(packagee);
+                boolean isSaved = packageBO.savePackage(packagee);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Package saved successfully!").show();
                     loadAllPackage();
@@ -252,9 +262,9 @@ public class PackageController {
 
             double price = Double.parseDouble(priceText);
 
-            Package packagee = new Package(packageId, packageName, description, price);
+            PackageDTO packagee = new PackageDTO(packageId, packageName, description, price);
             try {
-                boolean isUpdated = PackageRepo.updatePackage(packagee);
+                boolean isUpdated = packageBO.updatePackage(packagee);
                 if (isUpdated) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Package updated successfully!").show();
                     loadAllPackage();
@@ -276,7 +286,7 @@ public class PackageController {
         try {
             String packageID = txtPackageId.getText();
 
-            Package pkg = PackageRepo.searchPackageById(packageID);
+            PackageDTO pkg = packageBO.searchPackageById(packageID);
             if (pkg != null) {
                 txtPackageId.setText(pkg.getPackageId());
                 txtPackageName.setText(pkg.getName());

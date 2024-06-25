@@ -15,12 +15,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.bo.PackageBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dao.PackageDAO;
 import lk.ijse.dao.impl.*;
 import lk.ijse.db.DBConnection;
 import lk.ijse.dto.*;
-import lk.ijse.dto.Package;
+import lk.ijse.dto.PackageDTO;
 import lk.ijse.dto.tm.BookingTm;
 import lk.ijse.dto.tm.RoomTm;
+import lk.ijse.entity.Package;
 import lk.ijse.entity.Payment;
 import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
@@ -127,6 +132,10 @@ public class BookingFormController {
     RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
 
     PaymentDaoImpl PaymentDaoImpl = new  PaymentDaoImpl();
+
+    //PackageDaoImpl PackageDaoImpl = new PackageDaoImpl();
+
+    PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
 
 
     @FXML
@@ -342,7 +351,7 @@ public class BookingFormController {
         String packageId = cmbPackageID.getValue();
 
         try {
-            Package Package = PackageRepo.searchPackageById(packageId);
+            PackageDTO Package = packageBO.searchPackageById(packageId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -351,7 +360,7 @@ public class BookingFormController {
     private void getPackageID() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> packageIdList = PackageRepo.getIds();
+            List<String> packageIdList = packageBO.getIds();
 
             for (String employeeId : packageIdList) {
                 obList.add(employeeId);

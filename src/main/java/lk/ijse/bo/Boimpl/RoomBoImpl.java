@@ -81,12 +81,6 @@ public class RoomBoImpl implements RoomBO {
         return roomDAO.getIds();
 
     }
-
-    public  boolean updateRooms(List<Booking> odList) {
-
-        return  false;
-    }
-
     public  String getLastRoomId() throws SQLException {
 
         return roomDAO.getLastId();

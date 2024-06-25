@@ -33,6 +33,8 @@ public class DAOFactory {
                 return new ClientDaoImpl();
             case EMPLOYEE:
                 return new EmployeeDaoImpl();
+            case ADMIN:
+                return new AdminDaoImpl();
             default:
                 return null;
 

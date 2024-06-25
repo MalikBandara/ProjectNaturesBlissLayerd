@@ -32,6 +32,8 @@ public class BOFactory {
                 return new ClientBoImpl();
             case EMPLOYEE:
                 return new EmployeeBoImpl();
+            case ADMIN:
+                return new AdminBoImpl();
             default:
                 return null;
         }

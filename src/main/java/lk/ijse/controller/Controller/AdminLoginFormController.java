@@ -18,6 +18,10 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.Mail;
+import lk.ijse.bo.AdminBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dao.impl.AdminDaoImpl;
 import lk.ijse.db.DBConnection;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
@@ -49,6 +53,9 @@ public class AdminLoginFormController implements Initializable {
 
     @FXML
     private TextField username;
+
+
+    AdminBO adminBO = (AdminBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.ADMIN);
 
     @FXML
     void BackLoginONAction(ActionEvent event) {
@@ -103,11 +110,8 @@ public class AdminLoginFormController implements Initializable {
                 throw new IllegalArgumentException("Username or password is empty");
             }
 
-            String sql = "SELECT Email , Passward FROM Admin WHERE Email = ?";
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, userName);
-            ResultSet resultSet = statement.executeQuery();
+
+            ResultSet resultSet = adminBO.cheackCredintial(userName);
 
             if (resultSet.next()) {
                 String user = resultSet.getString("Email");

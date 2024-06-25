@@ -1,13 +1,13 @@
 package lk.ijse.dto;
 
-public class Admin {
+public class AdminDTO {
     private String email;
     private String username;
     private String password;
     private String type;
 
 
-    public Admin(String email, String username, String password, String type) {
+    public AdminDTO(String email, String username, String password, String type) {
         this.email = email;
         this.username = username;
         this.password = password;

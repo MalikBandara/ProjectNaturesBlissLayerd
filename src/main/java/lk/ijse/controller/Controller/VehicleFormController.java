@@ -15,16 +15,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.bo.EmployeeBO;
 import lk.ijse.bo.VehicleBO;
 import lk.ijse.bo.custom.BOFactory;
 import lk.ijse.bo.custom.BOTypes;
-import lk.ijse.dao.VehicleDAO;
-import lk.ijse.dto.Employee;
+import lk.ijse.dto.EmployeeDTO;
 import lk.ijse.dto.VehicleDTO;
 import lk.ijse.dto.tm.VehicleTm;
-import lk.ijse.dao.impl.EmployeeRepo;
-import lk.ijse.dao.impl.VehicleDaoImpl;
-import lk.ijse.entity.Vehicle;
+import lk.ijse.dao.impl.EmployeeDaoImpl;
+import lk.ijse.entity.Employee;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -81,7 +80,11 @@ public class VehicleFormController {
 
     //VehicleDAO vehicleDAO = new VehicleDaoImpl();
 
+    //EmployeeDaoImpl EmployeeDaoImpl = new EmployeeDaoImpl();
+
     VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.VEHICLE);
+
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.EMPLOYEE);
 
     @FXML
     void backOnAction(ActionEvent event) {
@@ -185,7 +188,7 @@ public class VehicleFormController {
         String employeeiD = cmbEmployeeID.getValue();
 
         try {
-            Employee Employee = EmployeeRepo.searchEmployeeById(employeeiD);
+            EmployeeDTO Employee = employeeBO.searchEmployeeById(employeeiD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -194,7 +197,7 @@ public class VehicleFormController {
     private void getEmployeeId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> employeeIdList = EmployeeRepo.getAllEmployeeIds();
+            List<String> employeeIdList = employeeBO.getAllEmployeeIds();
 
             for (String employeeId : employeeIdList) {
                 obList.add(employeeId);

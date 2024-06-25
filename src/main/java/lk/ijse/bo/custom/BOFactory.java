@@ -30,6 +30,8 @@ public class BOFactory {
                 return  new PackageBoImpl();
             case CLIENT:
                 return new ClientBoImpl();
+            case EMPLOYEE:
+                return new EmployeeBoImpl();
             default:
                 return null;
         }

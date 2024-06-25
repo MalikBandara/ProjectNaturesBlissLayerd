@@ -15,11 +15,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dto.Employee;
-import lk.ijse.dto.RoomDTO;
+import lk.ijse.bo.EmployeeBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dto.EmployeeDTO;
 import lk.ijse.dto.tm.EmployeeTm;
-import lk.ijse.dao.impl.EmployeeRepo;
+import lk.ijse.dao.impl.EmployeeDaoImpl;
 import lk.ijse.dao.impl.RoomDaoImpl;
+import lk.ijse.entity.Employee;
 import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
@@ -99,6 +102,13 @@ public class EmployeeFormController {
 
     RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
 
+    //EmployeeDaoImpl EmployeeDaoImpl = new EmployeeDaoImpl();
+
+
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.EMPLOYEE);
+
+
+
     public void initialize(){
         setCellValueFactory();
         loadAllEmployees();
@@ -112,8 +122,8 @@ public class EmployeeFormController {
         ObservableList<EmployeeTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Employee> employeeList = EmployeeRepo.getAllEmployees();
-            for(Employee employee : employeeList){
+            List<EmployeeDTO> employeeList = employeeBO.getAllEmployees();
+            for(EmployeeDTO employee : employeeList){
                 EmployeeTm empTm = new EmployeeTm(
                         employee.getEmployeeId(),
                         employee.getName(),
@@ -187,7 +197,7 @@ public class EmployeeFormController {
         if (isValied()){
             try {
                 String employeeId = txtempid.getText();
-                boolean isDeleted = EmployeeRepo.deleteEmployee(employeeId);
+                boolean isDeleted = employeeBO.deleteEmployee(employeeId);
                 if (isDeleted) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Employee deleted successfully!").show();
                     loadAllEmployees();
@@ -233,10 +243,10 @@ public class EmployeeFormController {
             Double employeeSalary = Double.parseDouble(employeeSalaryText);
 
 
-            Employee employee = new Employee(employeeId, employeeName, employeeAddress, employeeSalary, employeeType, employeeAvailability, rooID);
+            EmployeeDTO employee = new EmployeeDTO(employeeId, employeeName, employeeAddress, employeeSalary, employeeType, employeeAvailability, rooID);
 
             try {
-                boolean isSaved = EmployeeRepo.saveEmployee(employee);
+                boolean isSaved = employeeBO.saveEmployee(employee);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully!").show();
                     loadAllEmployees();
@@ -289,10 +299,10 @@ public class EmployeeFormController {
             Double employeeSalary = Double.parseDouble(employeeSalaryText);
 
             // Create the employee object
-            Employee employee = new Employee(employeeId, employeeName, employeeAddress, employeeSalary, employeeType, employeeAvailability, rooID);
+            EmployeeDTO employee = new EmployeeDTO(employeeId, employeeName, employeeAddress, employeeSalary, employeeType, employeeAvailability, rooID);
 
             try {
-                boolean isUpdated = EmployeeRepo.updateEmployee(employee);
+                boolean isUpdated = employeeBO.updateEmployee(employee);
                 if (isUpdated) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Employee updated successfully!").show();
                     loadAllEmployees();
@@ -315,7 +325,7 @@ public class EmployeeFormController {
         try {
             String employeeId = txtempid.getText();
 
-            Employee employee = EmployeeRepo.searchEmployeeById(employeeId);
+            EmployeeDTO employee = employeeBO.searchEmployeeById(employeeId);
             if (employee != null) {
                 txtempid.setText(employee.getEmployeeId());
                 txtName.setText(employee.getName());
@@ -403,7 +413,7 @@ public class EmployeeFormController {
 
     private void generateNewEmployeeId() {
         try {
-            String lastId = EmployeeRepo.getLastEmployeeId();
+            String lastId = employeeBO.getLastEmployeeId();
             String newId = generateNextEmployeeId(lastId);
             txtempid.setText(newId);
         } catch (SQLException e) {

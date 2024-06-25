@@ -1,4 +1,4 @@
-package lk.ijse.dto;
+package lk.ijse.entity;
 
 public class Employee {
     private String employeeId;
@@ -12,6 +12,17 @@ public class Employee {
 
     // Constructor
     public Employee(String employeeId, String name, String address, double salary, String type, String availability, String roomId) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.address = address;
+        this.salary = salary;
+        this.type = type;
+        this.availability = availability;
+        this.roomId = roomId;
+
+    }
+
+    public Employee(String name, String address, double salary, String type, String availability, String roomId, String employeeId) {
         this.employeeId = employeeId;
         this.name = name;
         this.address = address;

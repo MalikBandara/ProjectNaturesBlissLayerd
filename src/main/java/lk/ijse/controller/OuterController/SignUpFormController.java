@@ -14,9 +14,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dto.Guest;
+import lk.ijse.bo.GuestBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dto.GuestDTO;
+import lk.ijse.entity.Guest;
 import lk.ijse.regex;
-import lk.ijse.dao.impl.GuestRepo;
+import lk.ijse.dao.impl.GuestDaoImpl;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -53,6 +57,10 @@ public class SignUpFormController implements Initializable {
 
     @FXML
     private ImageView logo;
+
+
+    GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
+
 
     @FXML
     void LoginONAction(ActionEvent event) throws IOException {
@@ -91,9 +99,9 @@ public class SignUpFormController implements Initializable {
                             if (!passwordValid) {
                                 new Alert(Alert.AlertType.ERROR, "Password must be containing at least one uppercase, one lowercase, one digit and one special character").show();
                             }else{
-                                Guest touristDto = new Guest(userId, userName, password,email);
+                                GuestDTO touristDto = new GuestDTO(userId, userName, password,email);
                                 try {
-                                    boolean isSaved = GuestRepo.saveGuest(touristDto);
+                                    boolean isSaved = guestBO.saveGuest(touristDto);
                                     if (isSaved) {
                                         clearFields();
                                         new Alert(Alert.AlertType.INFORMATION, "Sign Up Successful").showAndWait();

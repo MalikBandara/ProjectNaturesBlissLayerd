@@ -12,8 +12,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lk.ijse.bo.GuestBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
 import lk.ijse.controller.OuterController.LoginFormPart2;
-import lk.ijse.dao.impl.GuestRepo;
+import lk.ijse.dao.impl.GuestDaoImpl;
 
 
 import java.io.IOException;
@@ -28,8 +31,12 @@ public class ChangePasswordFormController {
     public PasswordField txtRePassword;
     public Text txtUserId;
 
+
+
+    GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
+
     public void initialize() {
-       // new SlideInLeft(txtSubText).play();
+
         txtUserId.setText(LoginFormPart2.attemptingUser);
         new FadeIn(txtUserId).play();
     }
@@ -69,7 +76,7 @@ public class ChangePasswordFormController {
         String password = txtPassword.getText();
         String rePassword = txtRePassword.getText();
         if(password.length()>=8 && password.equals(rePassword)){
-            boolean isChanged = GuestRepo.changePassword(LoginFormPart2.attemptingUser, password);
+            boolean isChanged = guestBO.changePassword(LoginFormPart2.attemptingUser, password);
             if(isChanged){
                 new Alert(Alert.AlertType.CONFIRMATION, "Password Changed Successfully | Redirecting to Login").showAndWait();
                 Parent root = FXMLLoader.load(getClass().getResource("/view/LoginPart2.fxml"));

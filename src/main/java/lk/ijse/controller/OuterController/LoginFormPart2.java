@@ -18,8 +18,12 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.Mail;
-import lk.ijse.dto.Guest;
-import lk.ijse.dao.impl.GuestRepo;
+import lk.ijse.bo.GuestBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dto.GuestDTO;
+import lk.ijse.dao.impl.GuestDaoImpl;
+import lk.ijse.entity.Guest;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -55,13 +59,16 @@ public class LoginFormPart2 implements Initializable {
 
     public static int oneTimePassword;
 
+
+    GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
+
     @FXML
     void loginOnAction() {
         String username = UserId.getText();
         String pass = password.getText();
 
         try {
-            Guest guest = GuestRepo.getGuest(username);
+            GuestDTO guest = guestBO.getGuest(username);
 
             if (guest != null && guest.getPassword().equals(pass)) {
                 try {
@@ -167,7 +174,7 @@ public class LoginFormPart2 implements Initializable {
 
     public void txtForgetPasswordOnAction(MouseEvent mouseEvent) throws SQLException {
         if(!UserId.getText().isEmpty()){
-            if(GuestRepo.getGuest(UserId.getText())!=null) {
+            if(guestBO.getGuest(UserId.getText())!=null) {
                 attemptingUser = UserId.getText();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
@@ -183,7 +190,7 @@ public class LoginFormPart2 implements Initializable {
                     if (response == buttonTypeYes) {
                         try {
                             oneTimePassword = generateOTP();
-                            String touristEmail = GuestRepo.getTouristEmailFromId(UserId.getText());
+                            String touristEmail = guestBO.getTouristEmailFromId(UserId.getText());
                             Mail mail = new Mail();
                             mail.setMsg("Hello," + "\n\n\tUser : " + touristEmail + " \n\n\tAn OTP Request Detected at :  " + LocalDateTime.now() + " \n\n\tOTP : " + oneTimePassword + " \n\nThank You,\n" +
                                     "Natures bliss  Holidays Support Team");

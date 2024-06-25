@@ -1,5 +1,6 @@
 package lk.ijse.bo.custom;
 
+import lk.ijse.bo.Boimpl.GuestBOImpl;
 import lk.ijse.bo.Boimpl.PaymentBoImpl;
 import lk.ijse.bo.Boimpl.RoomBoImpl;
 import lk.ijse.bo.Boimpl.VehicleBoImpl;
@@ -26,6 +27,8 @@ public class BOFactory {
                 return new VehicleBoImpl();
             case PAYMENT:
                 return new PaymentBoImpl();
+            case GUEST:
+                return new GuestBOImpl();
             default:
                 return null;
         }

@@ -1,20 +1,20 @@
 package lk.ijse.dto;
 
-public class Guest {
+public class GuestDTO {
     private String identityDetails;
     private String name;
     private String password;
     private String email;
 
     // Constructor
-    public Guest(String identityDetails, String name, String password, String email) {
+    public GuestDTO(String identityDetails, String name, String password, String email) {
         this.identityDetails = identityDetails;
         this.name = name;
         this.password = password;
         this.email = email;
     }
 
-    public Guest() {
+    public GuestDTO() {
 
     }
 

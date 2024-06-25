@@ -16,9 +16,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dto.Client;
+import lk.ijse.bo.ClientBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
+import lk.ijse.dto.ClientDTO;
 import lk.ijse.dto.tm.ClientTm;
-import lk.ijse.dao.impl.ClientRepo;
+import lk.ijse.dao.impl.ClientDaoImpl;
+import lk.ijse.entity.Client;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
 
@@ -100,6 +104,10 @@ public class Client2Controller {
     @FXML
     private TableView<ClientTm> tblclient;
 
+    //ClientDaoImpl ClientDaoImpl = new ClientDaoImpl();
+
+    ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.CLIENT);
+
     public void initialize(){
         setCellValueFactory();
         loadAllClient();
@@ -111,8 +119,8 @@ public class Client2Controller {
         ObservableList<ClientTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Client> clientList = ClientRepo.getAllClients();
-            for (Client client : clientList) {
+            List<ClientDTO> clientList = clientBO.getAllClients();
+            for (ClientDTO client : clientList) {
                 ClientTm clientTm = new ClientTm(
                         client.getId(),
                         client.getName(),
@@ -196,7 +204,7 @@ public class Client2Controller {
         String clientId = id.getText();
         if (isValied()){
             try {
-                boolean isDeleted = ClientRepo.deleteClient(clientId);
+                boolean isDeleted = clientBO.deleteClient(clientId);
                 if(isDeleted) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Client deleted!").show();
                     loadAllClient();
@@ -228,11 +236,11 @@ public class Client2Controller {
 
         if (isValied()){
             // Create a new Client object
-            Client client = new Client(generateClientId(), clientName, clientEmail, clientPhone, clientAddress, checkInDate, checkOutDate);
+            ClientDTO client = new ClientDTO(generateClientId(), clientName, clientEmail, clientPhone, clientAddress, checkInDate, checkOutDate);
 
             // Save the client
             try {
-                boolean isSaved = ClientRepo.saveClient(client);
+                boolean isSaved = clientBO.saveClient(client);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Client saved successfully!").show();
                     loadAllClient();
@@ -247,7 +255,7 @@ public class Client2Controller {
 
     private String generateClientId() {
         try {
-            String latestId = ClientRepo.getLatestClientId(); // Get the latest client ID from the database
+            String latestId = clientBO.getLatestClientId(); // Get the latest client ID from the database
             if (latestId != null) {
                 int numericPart = Integer.parseInt(latestId.substring(1)); // Extract the numeric part
                 String newId = "C" + String.format("%03d", numericPart + 1); // Increment the numeric part and format it
@@ -273,9 +281,9 @@ public class Client2Controller {
         String checkOut = cheackout.getText();
 
         if (isValied()){
-            Client client = new Client(clientId, name, email, phone, address, checkIn, checkOut);
+            ClientDTO client = new ClientDTO(clientId, name, email, phone, address, checkIn, checkOut);
             try {
-                boolean isUpdated = ClientRepo.updateClient(client);
+                boolean isUpdated = clientBO.updateClient(client);
                 if(isUpdated) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Client updated successfully!").show();
                     loadAllClient();
@@ -291,7 +299,7 @@ public class Client2Controller {
     }
     private void generateNewClientId() {
         try {
-            String lastId = ClientRepo.getLastClientId();
+            String lastId = clientBO.getLastClientId();
             String newId = generateNextClientId(lastId);
             id.setText(newId);
         } catch (SQLException e) {
@@ -324,7 +332,7 @@ public class Client2Controller {
             String clientId = id.getText();
 
             // Call the method to search for a client by ID
-            Client client = ClientRepo.searchClientById(clientId);
+            ClientDTO client = clientBO.searchClientById(clientId);
 
             if (client != null) {
                 // Populate the fields with the client information if found

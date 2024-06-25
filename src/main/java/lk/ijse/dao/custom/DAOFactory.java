@@ -29,6 +29,8 @@ public class DAOFactory {
                 return new GuestDaoImpl();
             case PACKAGE:
                 return new PackageDaoImpl();
+            case CLIENT:
+                return new ClientDaoImpl();
             default:
                 return null;
 

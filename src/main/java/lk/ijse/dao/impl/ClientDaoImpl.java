@@ -1,7 +1,10 @@
 package lk.ijse.dao.impl;
 
+import lk.ijse.dao.ClientDAO;
+import lk.ijse.dao.custom.SQLUtil;
 import lk.ijse.db.DBConnection;
-import lk.ijse.dto.Client;
+import lk.ijse.dto.ClientDTO;
+import lk.ijse.entity.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientRepo {
-    public static boolean saveClient(Client client) throws SQLException, SQLException {
+public class ClientDaoImpl implements ClientDAO {
+    public  boolean Save(Client entity) throws SQLException, SQLException {
+        /*
         String sql = "INSERT INTO Client (id, name, email, phone, address, check_in, check_out) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection connection = DBConnection.getInstance().getConnection();
@@ -25,13 +29,28 @@ public class ClientRepo {
         pstm.setObject(7, client.getCheckOut());
 
         return pstm.executeUpdate() > 0;
+
+         */
+        return  SQLUtil.execute("INSERT INTO Client (id, name, email, phone, address, check_in, check_out) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                entity.getId(),
+                entity.getName(),
+                entity.getEmail(),
+                entity.getPhone(),
+                entity.getAddress(),
+                entity.getCheckIn(),
+                entity.getCheckOut());
+
     }
-    public static String getLatestClientId() throws SQLException {
+    public  String getLatestClientId() throws SQLException {
+        /*
         String sql = "SELECT id FROM Client ORDER BY id DESC LIMIT 1";
 
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();
+
+         */
+        ResultSet resultSet = SQLUtil.execute("SELECT id FROM Client ORDER BY id DESC LIMIT 1");
 
         if (resultSet.next()) {
             return resultSet.getString("id");
@@ -40,7 +59,8 @@ public class ClientRepo {
         }
     }
 
-    public static boolean updateClient(Client client) throws SQLException {
+    public  boolean update(Client entity) throws SQLException {
+        /*
         String sql = "UPDATE Client SET name = ?, email = ?, phone = ?, address = ?, check_in = ?, check_out = ? WHERE id = ?";
 
         Connection connection = DBConnection.getInstance().getConnection();
@@ -54,9 +74,20 @@ public class ClientRepo {
         pstm.setObject(7, client.getId());
 
         return pstm.executeUpdate() > 0;
+
+         */
+        return  SQLUtil.execute("UPDATE Client SET name = ?, email = ?, phone = ?, address = ?, check_in = ?, check_out = ? WHERE id = ?",
+                entity.getName(),
+                entity.getEmail(),
+                entity.getPhone(),
+                entity.getAddress(),
+                entity.getCheckIn(),
+                entity.getCheckOut(),
+                entity.getId());
     }
 
-    public static boolean deleteClient(String clientId) throws SQLException {
+    public  boolean delete(String clientId) throws SQLException {
+        /*
         String sql = "DELETE FROM Client WHERE id = ?";
 
         Connection connection = DBConnection.getInstance().getConnection();
@@ -64,9 +95,13 @@ public class ClientRepo {
         pstm.setObject(1, clientId);
 
         return pstm.executeUpdate() > 0;
+
+         */
+        return SQLUtil.execute("DELETE FROM Client WHERE id = ?",clientId);
     }
 
-    public static Client searchClientById(String clientId) throws SQLException {
+    public  Client search(String clientId) throws SQLException {
+        /*
         String sql = "SELECT * FROM Client WHERE id = ?";
 
         Connection connection = DBConnection.getInstance().getConnection();
@@ -74,6 +109,9 @@ public class ClientRepo {
         pstm.setString(1, clientId); // Use setString instead of setObject for String parameters
 
         ResultSet resultSet = pstm.executeQuery();
+
+         */
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Client WHERE id = ?",clientId);
         if (resultSet.next()) {
             String id = resultSet.getString(1);
             String name = resultSet.getString(2);
@@ -91,12 +129,16 @@ public class ClientRepo {
             return null;
         }
     }
-    public static List<Client> getAllClients() throws SQLException {
+    public  List<Client> getAll() throws SQLException {
+        /*
         String sql = "SELECT * FROM Client";
 
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();
+
+         */
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Client");
 
         List<Client> clientList = new ArrayList<>();
         while (resultSet.next()) {
@@ -115,13 +157,17 @@ public class ClientRepo {
     }
 
 
-    public static List<String> getID() throws SQLException {
+    public  List<String> getIds() throws SQLException {
+        /*
         String sql = "SELECT id FROM Client";
 
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();
 
+         */
+
+        ResultSet resultSet = SQLUtil.execute("SELECT id FROM Client");
         List<String> mtIDList = new ArrayList<>();
         while (resultSet.next()){
             mtIDList.add(resultSet.getString(1));
@@ -130,12 +176,16 @@ public class ClientRepo {
 
     }
 
-    public static String getLastClientId() throws SQLException {
+    public  String getLastId() throws SQLException {
+        /*
 
         String sql = "SELECT id FROM Client ORDER BY id DESC LIMIT 1";
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();
+
+         */
+        ResultSet resultSet = SQLUtil.execute("SELECT id FROM Client ORDER BY id DESC LIMIT 1");
 
         if (resultSet.next()) {
             return resultSet.getString(1);

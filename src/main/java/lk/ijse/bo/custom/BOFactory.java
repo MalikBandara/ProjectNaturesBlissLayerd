@@ -28,6 +28,8 @@ public class BOFactory {
                 return new GuestBOImpl();
             case PACKAGE:
                 return  new PackageBoImpl();
+            case CLIENT:
+                return new ClientBoImpl();
             default:
                 return null;
         }

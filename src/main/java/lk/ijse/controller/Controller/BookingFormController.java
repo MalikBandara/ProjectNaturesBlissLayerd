@@ -15,17 +15,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.bo.ClientBO;
 import lk.ijse.bo.PackageBO;
 import lk.ijse.bo.custom.BOFactory;
 import lk.ijse.bo.custom.BOTypes;
-import lk.ijse.dao.PackageDAO;
 import lk.ijse.dao.impl.*;
 import lk.ijse.db.DBConnection;
 import lk.ijse.dto.*;
 import lk.ijse.dto.PackageDTO;
 import lk.ijse.dto.tm.BookingTm;
 import lk.ijse.dto.tm.RoomTm;
-import lk.ijse.entity.Package;
+import lk.ijse.entity.Client;
 import lk.ijse.entity.Payment;
 import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
@@ -137,7 +137,9 @@ public class BookingFormController {
 
     PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
 
+    //ClientDaoImpl ClientDaoImpl = new ClientDaoImpl();
 
+    ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.CLIENT);
     @FXML
     void btnDeleteBookingOnAction(ActionEvent event) {
         String bookingId = txtBookingId.getText(); // Assuming the ID field corresponds to the booking ID
@@ -311,7 +313,7 @@ public class BookingFormController {
         String identity = cmbIdentity.getValue();
 
         try {
-            Client Client = ClientRepo.searchClientById(identity);
+            ClientDTO Client = clientBO.searchClientById(identity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -320,7 +322,7 @@ public class BookingFormController {
     private void getClient() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> GusetIdList = ClientRepo.getID();
+            List<String> GusetIdList = clientBO.getID();
 
             for (String cliId : GusetIdList) {
                 obList.add(cliId);

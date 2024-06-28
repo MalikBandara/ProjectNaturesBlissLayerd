@@ -1,6 +1,6 @@
 package lk.ijse.dto;
 
-public class Booking {
+public class BookingDTO {
     private String bookingId;
     private String packageId;
     private String identityDetails;
@@ -9,10 +9,10 @@ public class Booking {
     private String roomId;
 
     // Constructors
-    public Booking() {
+    public BookingDTO() {
     }
 
-    public Booking(String bookingId, String packageId, String identityDetails, String bookingDate, String payId, String roomId) {
+    public BookingDTO(String bookingId, String packageId, String identityDetails, String bookingDate, String payId, String roomId) {
         this.bookingId = bookingId;
         this.packageId = packageId;
         this.identityDetails = identityDetails;

@@ -1,4 +1,4 @@
 package lk.ijse.bo.custom;
 
-public interface SpuerBO {
+public interface SuPerBO {
 }

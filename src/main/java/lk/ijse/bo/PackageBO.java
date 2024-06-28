@@ -1,10 +1,10 @@
 package lk.ijse.bo;
-import lk.ijse.bo.custom.SpuerBO;
+import lk.ijse.bo.custom.SuPerBO;
 import lk.ijse.dto.PackageDTO;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface PackageBO extends SpuerBO {
+public interface PackageBO extends SuPerBO {
       boolean savePackage(PackageDTO Package) throws SQLException ;
       boolean updatePackage(PackageDTO Package) throws SQLException ;
       boolean deletePackage(String packageId) throws SQLException ;

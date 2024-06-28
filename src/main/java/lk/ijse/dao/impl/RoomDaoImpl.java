@@ -6,6 +6,7 @@ import lk.ijse.dao.custom.SQLUtil;
 import lk.ijse.entity.Reservation;
 import lk.ijse.entity.Room;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class RoomDaoImpl implements RoomDAO {
     }
     public  boolean updateRoomStatus(String roomId, String status) throws SQLException {
 
-        return SQLUtil.execute("UPDATE Room SET status = ? WHERE Room_id = ?",roomId,status);
+        return SQLUtil.execute("UPDATE Room SET Status = ? WHERE Room_id = ?",status,roomId);
     }
 
     @Override
@@ -112,6 +113,17 @@ public class RoomDaoImpl implements RoomDAO {
         } else {
             return null;
         }
+    }
+    public boolean UpdateRoomStatusForBooking(String roomId) throws SQLException {
+        /*
+        String roomUpdateSql = "UPDATE Room SET Status = 'Booked' WHERE Room_id = ?";
+        PreparedStatement roomUpdatePstm = connection.prepareStatement(roomUpdateSql);
+        roomUpdatePstm.setString(1, roomID);
+        int roomUpdateResult = roomUpdatePstm.executeUpdate();
+
+         */
+        //roomID
+        return SQLUtil.execute("UPDATE Room SET Status = 'Booked' WHERE Room_id = ?",roomId);
     }
 
 }

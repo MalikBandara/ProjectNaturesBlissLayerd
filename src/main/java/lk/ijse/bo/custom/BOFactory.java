@@ -16,7 +16,7 @@ public class BOFactory {
         }
         return boFactory;
     }
-    public SpuerBO getBOTYpes(BOTypes boTypes){
+    public SuPerBO getBOTYpes(BOTypes boTypes){
         switch (boTypes){
             case ROOM :
                 return new RoomBoImpl();
@@ -36,6 +36,8 @@ public class BOFactory {
                 return new AdminBoImpl();
             case RESERVATION:
                 return new ReservationBoImpl();
+            case BOOKING:
+                return new BookingBoImpl();
             default:
                 return null;
         }

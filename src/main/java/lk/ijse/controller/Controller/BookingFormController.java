@@ -15,8 +15,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.bo.BookingBO;
 import lk.ijse.bo.ClientBO;
 import lk.ijse.bo.PackageBO;
+import lk.ijse.bo.RoomBO;
 import lk.ijse.bo.custom.BOFactory;
 import lk.ijse.bo.custom.BOTypes;
 import lk.ijse.dao.impl.*;
@@ -25,7 +27,7 @@ import lk.ijse.dto.*;
 import lk.ijse.dto.PackageDTO;
 import lk.ijse.dto.tm.BookingTm;
 import lk.ijse.dto.tm.RoomTm;
-import lk.ijse.entity.Client;
+import lk.ijse.entity.Booking;
 import lk.ijse.entity.Payment;
 import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
@@ -129,7 +131,9 @@ public class BookingFormController {
     @FXML
     private ComboBox<String> roomcmb;
 
-    RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
+    //RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
+
+    RoomBO roomBO = (RoomBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.ROOM);
 
     PaymentDaoImpl PaymentDaoImpl = new  PaymentDaoImpl();
 
@@ -140,6 +144,10 @@ public class BookingFormController {
     //ClientDaoImpl ClientDaoImpl = new ClientDaoImpl();
 
     ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.CLIENT);
+
+    //BookingDaoImpl BookingDaoImpl =  new BookingDaoImpl();
+
+    BookingBO bookingBO = (BookingBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.BOOKING);
     @FXML
     void btnDeleteBookingOnAction(ActionEvent event) {
         String bookingId = txtBookingId.getText(); // Assuming the ID field corresponds to the booking ID
@@ -147,16 +155,17 @@ public class BookingFormController {
         if (isValied()) {
             try {
                 // Retrieve the room ID associated with the booking
-                String roomId = BookingRepo.getRoomIdByBookingId(bookingId);
-                if (roomId == null) {
+                String roomIdd = bookingBO.getRoomIdByBookingId(bookingId);
+                if (roomIdd == null) {
                     new Alert(Alert.AlertType.ERROR, "Booking not found!").show();
                     return;
                 }
 
-                boolean isDeleted = BookingRepo.deleteBooking(bookingId);
+
+                boolean isDeleted = bookingBO.deleteBooking(bookingId);
                 if (isDeleted) {
                     // Update room status to available
-                    boolean isRoomUpdated = RoomDaoImpl.updateRoomStatus(roomId, "available");
+                    boolean isRoomUpdated = roomBO.updateRoomStatus(roomIdd, "Available");
                     if (!isRoomUpdated) {
                         new Alert(Alert.AlertType.WARNING, "Booking deleted, but room status not updated!").show();
                     }
@@ -204,16 +213,16 @@ public class BookingFormController {
                     new Alert(Alert.AlertType.ERROR, "Room is already booked!").show();
                     return;
                 }
-
-                boolean isSaved = BookingRepo.saveBookingAndUpdate(bookingId, packageId, identityDetails, payId, bookingDate, roomId);
+                BookingDTO bookingDTO = new BookingDTO(bookingId,packageId,identityDetails,bookingDate,payId,roomId);
+                boolean isSaved = bookingBO.saveBookingAndUpdate(bookingDTO);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Booking saved successfully!").show();
                     loadAllBooking();
                     loadAllRooms();
                     // Add any necessary actions after successful booking
                 }
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         } else {
             new Alert(Alert.AlertType.ERROR, "Check your fields correctly!").show();
@@ -221,7 +230,7 @@ public class BookingFormController {
     }
     private void generateNewBookingId() {
         try {
-            String lastBookingId = BookingRepo.getLastBookingId();
+            String lastBookingId = bookingBO.getLastBookingId();
             String newBookingId = generateNextBookingId(lastBookingId);
             txtBookingId.setText(newBookingId);
         } catch (SQLException e) {
@@ -247,26 +256,26 @@ public class BookingFormController {
     }
 
 
-    private boolean isRoomReserve(String roomId) throws SQLException {
+    public boolean isRoomReserve(String roomId) throws SQLException {
 
-        String sql = "SELECT * FROM Room WHERE Room_id = ? AND Status = 'Reservation Booked'";
-
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, roomId);
-        ResultSet resultSet = pstm.executeQuery();
-
-        return resultSet.next(); // Returns true if the room is already booked, false otherwise
+        BookingDaoImpl bookingDao = new BookingDaoImpl();
+        return bookingDao.isRoomReserved(roomId);
     }
 
-    private boolean isRoomIdBooked(String roomId) throws SQLException {
-        String sql = "SELECT * FROM Booking WHERE Room_id = ?";
+    public boolean isRoomIdBooked(String roomId) throws SQLException {
         boolean isRoomBooked = false;
 
+        /*
+        String sql = "SELECT * FROM Booking WHERE Room_id = ?";
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, roomId);
         ResultSet resultSet = pstm.executeQuery();
+
+         */
+        BookingDaoImpl bookingDao = new BookingDaoImpl();
+        ResultSet resultSet = bookingDao.CheackifRoomIdBooked(roomId);
+
 
         if (resultSet.next()) {
             isRoomBooked = true;
@@ -274,10 +283,15 @@ public class BookingFormController {
 
 
         if (!isRoomBooked) {
+            /*
             String roomStatusSql = "SELECT Status FROM Room WHERE Room_id = ?";
             PreparedStatement roomStatusPstm = connection.prepareStatement(roomStatusSql);
             roomStatusPstm.setString(1, roomId);
             ResultSet roomStatusResultSet = roomStatusPstm.executeQuery();
+
+             */
+            BookingDaoImpl bookingDao2 = new BookingDaoImpl();
+            ResultSet roomStatusResultSet = bookingDao2.isroombooked(roomId);
 
             if (roomStatusResultSet.next()) {
                 String status = roomStatusResultSet.getString("Status");
@@ -293,6 +307,7 @@ public class BookingFormController {
 
 
     private boolean isPayIdUsed(String payId) throws SQLException {
+        /*
         String sql = "SELECT * FROM Booking WHERE payId = ?";
 
         Connection connection = DBConnection.getInstance().getConnection();
@@ -301,6 +316,11 @@ public class BookingFormController {
         ResultSet resultSet = pstm.executeQuery();
 
         return resultSet.next(); // Returns true if the pay ID has been used before, false otherwise
+
+         */
+        BookingDaoImpl bookingDao = new BookingDaoImpl();
+        return bookingDao.payIdUsed(payId);
+
     }
 
     @FXML
@@ -378,8 +398,8 @@ public class BookingFormController {
         ObservableList<RoomTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Room> RoomList = RoomDaoImpl.getAll();
-            for (lk.ijse.entity.Room Room : RoomList) {
+            List<RoomDTO> RoomList = roomBO.getAll();
+            for (RoomDTO Room : RoomList) {
                 RoomTm tm = new RoomTm(
                         Room.getRoomId(),
                         Room.getRoomNumber(),
@@ -434,7 +454,7 @@ public class BookingFormController {
         String Roomid = roomcmb.getValue();
 
         try {
-            Room room = RoomDaoImpl.search(Roomid);
+            RoomDTO room = roomBO.searchRoomById(Roomid);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -442,7 +462,7 @@ public class BookingFormController {
     private void getRoomId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> rIDList = RoomDaoImpl.getIds();
+            List<String> rIDList = roomBO.getIds();
 
             for (String materialId : rIDList) {
                 obList.add(materialId);
@@ -475,8 +495,8 @@ public class BookingFormController {
         ObservableList<BookingTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Booking> clientList = BookingRepo.getAllBooking();
-            for (Booking Booking : clientList) {
+            List<BookingDTO> clientList = bookingBO.getAllBooking();
+            for (BookingDTO Booking : clientList) {
                 BookingTm Bookingtm = new BookingTm(
                         Booking.getBookingId(),
                         Booking.getPackageId(),

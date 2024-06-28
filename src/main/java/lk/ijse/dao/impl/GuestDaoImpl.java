@@ -3,14 +3,10 @@ package lk.ijse.dao.impl;
 import javafx.scene.control.Alert;
 import lk.ijse.dao.GuestDAO;
 import lk.ijse.dao.custom.SQLUtil;
-import lk.ijse.db.DBConnection;
-import lk.ijse.dto.Booking;
-import lk.ijse.dto.GuestDTO;
+import lk.ijse.dto.BookingDTO;
 import lk.ijse.entity.Guest;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -139,7 +135,7 @@ public class GuestDaoImpl implements GuestDAO {
         return 0;
     }
 
-    public  boolean updateGuest(List<Booking> bookingList) {
+    public  boolean updateGuest(List<BookingDTO> bookingList) {
 
         return true;
     }

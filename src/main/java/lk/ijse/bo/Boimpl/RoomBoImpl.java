@@ -5,7 +5,6 @@ import lk.ijse.dao.RoomDAO;
 import lk.ijse.dao.custom.DAOFactory;
 import lk.ijse.dao.custom.DAOTypes;
 
-import lk.ijse.dto.Booking;
 import lk.ijse.dto.RoomDTO;
 import lk.ijse.entity.Room;
 

@@ -85,6 +85,16 @@ public class PaymentDaoImpl implements PaymentDAO {
             return null;
         }
     }
+    public boolean PaymentIdStatusForBooking(String payid) throws SQLException {
+        /*
+        String paymentUpdateSql = "UPDATE payment SET method = 'Paid' WHERE payId = ?";
+        PreparedStatement paymentUpdatePstm = connection.prepareStatement(paymentUpdateSql);
+        paymentUpdatePstm.setString(1, payid);
+        int paymentUpdateResult = paymentUpdatePstm.executeUpdate();
+
+         */
+        return SQLUtil.execute("UPDATE payment SET method = 'Paid' WHERE payId = ?",payid);
+    }
 }
 
 

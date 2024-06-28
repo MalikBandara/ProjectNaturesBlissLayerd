@@ -37,6 +37,8 @@ public class DAOFactory {
                 return new AdminDaoImpl();
             case RESERVATION:
                 return new ReservationDaoImpl();
+            case BOOKING:
+                return new BookingDaoImpl();
             default:
                 return null;
 

@@ -5,7 +5,6 @@ import java.util.List;
 public interface CrudDAO <T>{
 
       boolean Save(T T) throws SQLException;
-
       boolean update(T T) throws SQLException ;
       T search(String Id) throws SQLException ;
 

@@ -6,7 +6,7 @@ import lk.ijse.dao.GuestDAO;
 import lk.ijse.dao.custom.DAOFactory;
 import lk.ijse.dao.custom.DAOTypes;
 
-import lk.ijse.dto.Booking;
+import lk.ijse.dto.BookingDTO;
 import lk.ijse.dto.GuestDTO;
 import lk.ijse.entity.Guest;
 
@@ -56,7 +56,7 @@ public class GuestBOImpl implements GuestBO {
 
     }
 
-    public  boolean updateGuest(List<Booking> bookingList) {
+    public  boolean updateGuest(List<BookingDTO> bookingList) {
 
         return true;
     }

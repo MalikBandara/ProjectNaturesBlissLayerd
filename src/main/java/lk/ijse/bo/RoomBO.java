@@ -1,14 +1,13 @@
 package lk.ijse.bo;
 
-import lk.ijse.bo.custom.SpuerBO;
-import lk.ijse.dto.Booking;
+import lk.ijse.bo.custom.SuPerBO;
 import lk.ijse.dto.RoomDTO;
 
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface RoomBO extends SpuerBO {
+public interface RoomBO extends SuPerBO {
     public  boolean saveRoom(RoomDTO room) throws SQLException ;
     public  boolean updateRoomStatus(String roomId, String status) throws SQLException ;
     public  boolean updateRoom(RoomDTO room) throws SQLException ;

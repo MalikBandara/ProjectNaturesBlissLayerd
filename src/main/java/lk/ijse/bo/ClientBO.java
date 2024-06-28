@@ -1,16 +1,15 @@
 package lk.ijse.bo;
 
 
-import lk.ijse.bo.custom.SpuerBO;
+import lk.ijse.bo.custom.SuPerBO;
 import lk.ijse.dto.ClientDTO;
-import lk.ijse.entity.Client;
 
 
 import java.sql.SQLException;
 
 import java.util.List;
 
-public interface ClientBO extends SpuerBO {
+public interface ClientBO extends SuPerBO {
     public  boolean saveClient(ClientDTO client) throws SQLException, SQLException ;
     public  String getLatestClientId() throws SQLException ;
     public  boolean updateClient(ClientDTO client) throws SQLException ;

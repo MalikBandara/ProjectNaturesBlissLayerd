@@ -60,7 +60,7 @@ public class ReservationDaoImpl implements ReservationDAO {
 
     public boolean isRoomReserved(String roomId) throws SQLException {
 
-        ResultSet resultSet =  SQLUtil.execute("SELECT * FROM Reservation WHERE Room_id = ?",roomId);
+        ResultSet resultSet =  SQLUtil.execute("SELECT * FROM Room WHERE Room_id = ? AND Status = 'Reservation Booked'" ,roomId);
         return resultSet.next();
     }
 

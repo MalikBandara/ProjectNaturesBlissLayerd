@@ -2,14 +2,9 @@ package lk.ijse.dao.impl;
 
 import lk.ijse.dao.PackageDAO;
 import lk.ijse.dao.custom.SQLUtil;
-import lk.ijse.db.DBConnection;
-import lk.ijse.dto.Booking;
-import lk.ijse.dto.PackageDTO;
 import lk.ijse.entity.Package;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

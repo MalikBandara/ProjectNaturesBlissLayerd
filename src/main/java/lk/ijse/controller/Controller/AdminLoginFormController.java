@@ -166,13 +166,13 @@ public class AdminLoginFormController implements Initializable {
     }
 
     private void sendEmailNotification(String email) {
-        // Create and configure the Mail object
+
         Mail mail = new Mail();
         mail.setMsg("Welcome! User: " + email + "\nNew Login Detected at: " + java.time.LocalDateTime.now() + "\nThank You,\nNatures bliss  Holidays  Support Team");
         mail.setTo(email);
         mail.setSubject("Natures bliss  Holidays Login Detection");
 
-        // Start a new thread to send the email
+
         Thread thread = new Thread(() -> {
             try {
                 mail.run();
@@ -180,7 +180,7 @@ public class AdminLoginFormController implements Initializable {
                 showNotification("Email Sent", "New Login Detected ! " + java.time.LocalTime.now()+ " Thanks you ");
             } catch (Exception e) {
                 e.printStackTrace();
-                // Show notification on email sending failure
+
                 showNotification("Email Sending Failed", "Failed to send email notification!");
             }
         });

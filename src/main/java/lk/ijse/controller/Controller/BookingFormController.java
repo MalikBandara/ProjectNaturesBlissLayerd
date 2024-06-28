@@ -131,30 +131,24 @@ public class BookingFormController {
     @FXML
     private ComboBox<String> roomcmb;
 
-    //RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
+
 
     RoomBO roomBO = (RoomBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.ROOM);
 
     PaymentDaoImpl PaymentDaoImpl = new  PaymentDaoImpl();
 
-    //PackageDaoImpl PackageDaoImpl = new PackageDaoImpl();
-
     PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
 
-    //ClientDaoImpl ClientDaoImpl = new ClientDaoImpl();
-
     ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.CLIENT);
-
-    //BookingDaoImpl BookingDaoImpl =  new BookingDaoImpl();
 
     BookingBO bookingBO = (BookingBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.BOOKING);
     @FXML
     void btnDeleteBookingOnAction(ActionEvent event) {
-        String bookingId = txtBookingId.getText(); // Assuming the ID field corresponds to the booking ID
+        String bookingId = txtBookingId.getText();
 
         if (isValied()) {
             try {
-                // Retrieve the room ID associated with the booking
+
                 String roomIdd = bookingBO.getRoomIdByBookingId(bookingId);
                 if (roomIdd == null) {
                     new Alert(Alert.AlertType.ERROR, "Booking not found!").show();
@@ -164,7 +158,7 @@ public class BookingFormController {
 
                 boolean isDeleted = bookingBO.deleteBooking(bookingId);
                 if (isDeleted) {
-                    // Update room status to available
+
                     boolean isRoomUpdated = roomBO.updateRoomStatus(roomIdd, "Available");
                     if (!isRoomUpdated) {
                         new Alert(Alert.AlertType.WARNING, "Booking deleted, but room status not updated!").show();
@@ -172,7 +166,7 @@ public class BookingFormController {
 
                     new Alert(Alert.AlertType.CONFIRMATION, "Booking deleted!").show();
                     loadAllBooking();
-                    loadAllRooms(); // Update rooms availability
+                    loadAllRooms();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Booking not found!").show();
                 }
@@ -188,11 +182,11 @@ public class BookingFormController {
     @FXML
     void PlaceBookingOnAction(ActionEvent event) {
         String bookingId = txtBookingId.getText();
-        String packageId = cmbPackageID.getValue(); // Assuming you're using a ComboBox for package selection
-        String identityDetails = cmbIdentity.getValue(); // Assuming you're using a ComboBox for guest identity selection
+        String packageId = cmbPackageID.getValue();
+        String identityDetails = cmbIdentity.getValue();
         String bookingDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String roomId = roomcmb.getValue();
-        String payId = cmbPayID.getValue(); // Assuming you're using a ComboBox for payment selection
+        String payId = cmbPayID.getValue();
 
         if (isValied()) {
             if (bookingId.isEmpty() || packageId == null || identityDetails == null ||
@@ -202,13 +196,12 @@ public class BookingFormController {
             }
 
             try {
-                // Check if pay ID has been used before
+
                 if (isPayIdUsed(payId)) {
                     new Alert(Alert.AlertType.ERROR, "Pay ID is already used!").show();
                     return;
                 }
 
-                // Check if room is already booked
                 if (isRoomIdBooked(roomId)|| isRoomReserve(roomId)) {
                     new Alert(Alert.AlertType.ERROR, "Room is already booked!").show();
                     return;
@@ -219,7 +212,7 @@ public class BookingFormController {
                     new Alert(Alert.AlertType.CONFIRMATION, "Booking saved successfully!").show();
                     loadAllBooking();
                     loadAllRooms();
-                    // Add any necessary actions after successful booking
+
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -239,17 +232,17 @@ public class BookingFormController {
     }
     private String generateNextBookingId(String lastBookingId) {
         if (lastBookingId == null || lastBookingId.isEmpty()) {
-            return "B001"; // Default ID if no bookings exist
+            return "B001";
         }
 
-        // Extracting the numeric part of the lastBookingId
+
         String numericPart = lastBookingId.substring(1); // Exclude the first character which is 'B'
 
-        // Incrementing the numeric part
+
         int num = Integer.parseInt(numericPart);
         num++;
 
-        // Formatting the numeric part to ensure it has three digits
+
         String paddedNum = String.format("%03d", num);
 
         return "B" + paddedNum;
@@ -258,24 +251,14 @@ public class BookingFormController {
 
     public boolean isRoomReserve(String roomId) throws SQLException {
 
-        BookingDaoImpl bookingDao = new BookingDaoImpl();
-        return bookingDao.isRoomReserved(roomId);
+
+        return bookingBO.isRoomReserved(roomId);
     }
 
     public boolean isRoomIdBooked(String roomId) throws SQLException {
         boolean isRoomBooked = false;
 
-        /*
-        String sql = "SELECT * FROM Booking WHERE Room_id = ?";
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, roomId);
-        ResultSet resultSet = pstm.executeQuery();
-
-         */
-        BookingDaoImpl bookingDao = new BookingDaoImpl();
-        ResultSet resultSet = bookingDao.CheackifRoomIdBooked(roomId);
-
+        ResultSet resultSet = bookingBO.CheackifRoomIdBooked(roomId);
 
         if (resultSet.next()) {
             isRoomBooked = true;
@@ -283,20 +266,14 @@ public class BookingFormController {
 
 
         if (!isRoomBooked) {
-            /*
-            String roomStatusSql = "SELECT Status FROM Room WHERE Room_id = ?";
-            PreparedStatement roomStatusPstm = connection.prepareStatement(roomStatusSql);
-            roomStatusPstm.setString(1, roomId);
-            ResultSet roomStatusResultSet = roomStatusPstm.executeQuery();
 
-             */
-            BookingDaoImpl bookingDao2 = new BookingDaoImpl();
-            ResultSet roomStatusResultSet = bookingDao2.isroombooked(roomId);
+
+            ResultSet roomStatusResultSet = bookingBO.isroombooked(roomId);
 
             if (roomStatusResultSet.next()) {
                 String status = roomStatusResultSet.getString("Status");
                 if (status.equalsIgnoreCase("Booked")) {
-                    isRoomBooked = true; // Room status is "Booked"
+                    isRoomBooked = true;
                 }
             }
         }
@@ -304,22 +281,9 @@ public class BookingFormController {
         return isRoomBooked;
     }
 
-
-
     private boolean isPayIdUsed(String payId) throws SQLException {
-        /*
-        String sql = "SELECT * FROM Booking WHERE payId = ?";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, payId);
-        ResultSet resultSet = pstm.executeQuery();
-
-        return resultSet.next(); // Returns true if the pay ID has been used before, false otherwise
-
-         */
-        BookingDaoImpl bookingDao = new BookingDaoImpl();
-        return bookingDao.payIdUsed(payId);
+        return bookingBO.payIdUsed(payId);
 
     }
 
@@ -605,14 +569,14 @@ public class BookingFormController {
             Stage stage = (Stage) backll.getScene().getWindow();
             stage.setTitle("DashBoard");
 
-            // Animate the exit of the welcome page
+
             Timeline exitTimeline = new Timeline(
                     new KeyFrame(Duration.seconds(1),
                             new KeyValue(backll.translateXProperty(), -backll.getWidth(), Interpolator.EASE_BOTH))
             );
             exitTimeline.setOnFinished(e -> {
-                // Animate the entrance of the service page
-                double sceneWidth = stage.getScene().getWidth(); // or any other suitable width
+
+                double sceneWidth = stage.getScene().getWidth();
                 loginPanel.translateXProperty().set(sceneWidth);
                 stage.getScene().setRoot(loginPanel);
                 Timeline entranceTimeline = new Timeline(

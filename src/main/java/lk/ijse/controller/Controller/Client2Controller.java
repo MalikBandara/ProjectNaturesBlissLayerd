@@ -104,8 +104,6 @@ public class Client2Controller {
     @FXML
     private TableView<ClientTm> tblclient;
 
-    //ClientDaoImpl ClientDaoImpl = new ClientDaoImpl();
-
     ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.CLIENT);
 
     public void initialize(){
@@ -159,13 +157,13 @@ public class Client2Controller {
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setTitle("Login");
 
-            // Animate the exit of the welcome page
+
             Timeline exitTimeline = new Timeline(
                     new KeyFrame(Duration.seconds(1),
                             new KeyValue(backButton.translateXProperty(), -backButton.getWidth(), Interpolator.EASE_BOTH))
             );
             exitTimeline.setOnFinished(e -> {
-                // Animate the entrance of the service page
+
                 double sceneWidth = stage.getScene().getWidth(); // or any other suitable width
                 Loginpanel.translateXProperty().set(sceneWidth);
                 stage.getScene().setRoot(Loginpanel);
@@ -235,10 +233,10 @@ public class Client2Controller {
         String checkOutDate = cheackout.getText();
 
         if (isValied()){
-            // Create a new Client object
+
             ClientDTO client = new ClientDTO(generateClientId(), clientName, clientEmail, clientPhone, clientAddress, checkInDate, checkOutDate);
 
-            // Save the client
+
             try {
                 boolean isSaved = clientBO.saveClient(client);
                 if (isSaved) {
@@ -312,7 +310,7 @@ public class Client2Controller {
             return "C001"; // Default ID if no clients exist
         }
 
-        // Extracting the numeric part of the lastId
+
         int num = Integer.parseInt(lastId.substring(1)); // Assuming "C" prefix
 
         // Incrementing the numeric part

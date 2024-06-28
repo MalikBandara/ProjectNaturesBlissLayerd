@@ -87,7 +87,7 @@ public class Payment2Controller {
     @FXML
     private TableView<PaymentTm> tblPayment;
 
-    //PaymentDaoImpl PaymentDaoImpl = new  PaymentDaoImpl();
+
     PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PAYMENT);
 
     @FXML
@@ -106,7 +106,7 @@ public class Payment2Controller {
                 new Alert(Alert.AlertType.ERROR, "Payment is not found!").show();
             }
         } catch (SQLException ex) {
-            ex.printStackTrace(); // Handle or log the exception as needed
+            ex.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "An error occurred while searching for the payment.").show();
         }
     }
@@ -121,13 +121,13 @@ public class Payment2Controller {
             Stage stage = (Stage) payback.getScene().getWindow();
             stage.setTitle("Dashboard");
 
-            // Animate the exit of the welcome page
+
             Timeline exitTimeline = new Timeline(
                     new KeyFrame(Duration.seconds(1),
                             new KeyValue(payback.translateXProperty(), -payback.getWidth(), Interpolator.EASE_BOTH))
             );
             exitTimeline.setOnFinished(e -> {
-                // Animate the entrance of the service page
+
                 double sceneWidth = stage.getScene().getWidth(); // or any other suitable width
                 Loginpanel.translateXProperty().set(sceneWidth);
                 stage.getScene().setRoot(Loginpanel);
@@ -159,8 +159,7 @@ public class Payment2Controller {
         paymentId.clear();
         status.clear();
 
-        // Clear selection in table view (if applicable)
-        // tblPayment.getSelectionModel().clearSelection();
+
     }
 
 

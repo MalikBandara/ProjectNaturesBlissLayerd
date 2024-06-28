@@ -102,19 +102,13 @@ public class EmployeeFormController {
 
     RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
 
-    //EmployeeDaoImpl EmployeeDaoImpl = new EmployeeDaoImpl();
-
-
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.EMPLOYEE);
-
-
 
     public void initialize(){
         setCellValueFactory();
         loadAllEmployees();
         getRoomId();
         generateNewEmployeeId();
-
 
 
     }
@@ -292,13 +286,12 @@ public class EmployeeFormController {
             if (employeeId.isEmpty() || employeeName.isEmpty() || employeeAddress.isEmpty() ||
                     employeeSalaryText.isEmpty() || employeeType.isEmpty() || employeeAvailability.isEmpty() || rooID.isEmpty()) {
                 new Alert(Alert.AlertType.ERROR, "Please fill all fields").show();
-                return; // Exit the method if any field is empty
+                return;
             }
 
-            // Parse the salary to double
+
             Double employeeSalary = Double.parseDouble(employeeSalaryText);
 
-            // Create the employee object
             EmployeeDTO employee = new EmployeeDTO(employeeId, employeeName, employeeAddress, employeeSalary, employeeType, employeeAvailability, rooID);
 
             try {
@@ -423,16 +416,16 @@ public class EmployeeFormController {
 
     private String generateNextEmployeeId(String lastId) {
         if (lastId == null || lastId.isEmpty()) {
-            return "E001"; // Default ID if no employees exist
+            return "E001";
         }
 
-        // Extracting the numeric part of the lastId
+
         int num = Integer.parseInt(lastId.substring(1)); // Assuming "E" prefix
 
-        // Incrementing the numeric part
+
         num++;
 
-        // Formatting the numeric part to ensure it has three digits
+
         String paddedNum = String.format("%03d", num);
 
         return "E" + paddedNum;

@@ -16,9 +16,6 @@ import java.util.List;
 
 public class ReservationDaoImpl implements ReservationDAO {
 
-
-
-
     public   String getRoomIdForReservation(String reservationId) throws SQLException {
 
              ResultSet resultSet = SQLUtil.execute("SELECT Room_id FROM Reservation WHERE id = ?",reservationId);

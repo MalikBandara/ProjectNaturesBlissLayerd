@@ -148,7 +148,6 @@ public class DashBordController implements Initializable {
     GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
     VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.VEHICLE);
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.EMPLOYEE);
-
     RoomBO roomBO = (RoomBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.ROOM);
 
 

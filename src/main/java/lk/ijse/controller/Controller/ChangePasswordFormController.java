@@ -31,8 +31,6 @@ public class ChangePasswordFormController {
     public PasswordField txtRePassword;
     public Text txtUserId;
 
-
-
     GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
 
     public void initialize() {

@@ -99,8 +99,6 @@ public class ReservationController implements Initializable {
 
     RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
 
-   // ReservationDaoImpl ReservationDaoImpl = new ReservationDaoImpl();
-
     ReservationBO reservationBO = (ReservationBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.RESERVATION);
 
 

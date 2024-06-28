@@ -10,5 +10,5 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface AdminDAO extends CrudDAO<Admin> {
-    public ResultSet cheackCredintial(String userName) throws SQLException ;
+     ResultSet cheackCredintial(String userName) throws SQLException ;
 }

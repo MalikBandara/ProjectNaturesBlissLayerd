@@ -100,7 +100,7 @@ public class ClientFormController {
     @FXML
     private TableView<ClientTm> tblclient;
 
-    //ClientDaoImpl ClientDaoImpl = new ClientDaoImpl();
+
 
     ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.CLIENT);
 
@@ -225,7 +225,7 @@ public class ClientFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String clientId = id.getText(); // Assuming the ID field corresponds to the client's ID
+        String clientId = id.getText();
 
         if (isValied()){
 
@@ -266,10 +266,10 @@ public class ClientFormController {
                 return;
             }
 
-            // Create a new Client object
+
             ClientDTO client = new ClientDTO(clientId, clientName, clientEmail, clientPhone, clientAddress, checkInDate, checkOutDate);
 
-            // Save the client
+
             try {
                 boolean isSaved = clientBO.saveClient(client);
                 if (isSaved) {

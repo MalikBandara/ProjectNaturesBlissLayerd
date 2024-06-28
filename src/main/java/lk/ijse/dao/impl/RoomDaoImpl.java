@@ -115,14 +115,7 @@ public class RoomDaoImpl implements RoomDAO {
         }
     }
     public boolean UpdateRoomStatusForBooking(String roomId) throws SQLException {
-        /*
-        String roomUpdateSql = "UPDATE Room SET Status = 'Booked' WHERE Room_id = ?";
-        PreparedStatement roomUpdatePstm = connection.prepareStatement(roomUpdateSql);
-        roomUpdatePstm.setString(1, roomID);
-        int roomUpdateResult = roomUpdatePstm.executeUpdate();
 
-         */
-        //roomID
         return SQLUtil.execute("UPDATE Room SET Status = 'Booked' WHERE Room_id = ?",roomId);
     }
 

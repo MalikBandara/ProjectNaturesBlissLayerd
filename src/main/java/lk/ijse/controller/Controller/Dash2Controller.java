@@ -97,7 +97,6 @@ public class Dash2Controller implements Initializable {
     GuestBO guestBO = (GuestBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.GUEST);
     VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.VEHICLE);
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.EMPLOYEE);
-
     RoomBO roomBO = (RoomBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.ROOM);
 
     private void setEmpCount(int empCount) {

@@ -15,22 +15,7 @@ import java.util.List;
 
 public class ClientDaoImpl implements ClientDAO {
     public  boolean Save(Client entity) throws SQLException, SQLException {
-        /*
-        String sql = "INSERT INTO Client (id, name, email, phone, address, check_in, check_out) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, client.getId());
-        pstm.setObject(2, client.getName());
-        pstm.setObject(3, client.getEmail());
-        pstm.setObject(4, client.getPhone());
-        pstm.setObject(5, client.getAddress());
-        pstm.setObject(6, client.getCheckIn());
-        pstm.setObject(7, client.getCheckOut());
-
-        return pstm.executeUpdate() > 0;
-
-         */
         return  SQLUtil.execute("INSERT INTO Client (id, name, email, phone, address, check_in, check_out) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 entity.getId(),
                 entity.getName(),
@@ -42,40 +27,18 @@ public class ClientDaoImpl implements ClientDAO {
 
     }
     public  String getLatestClientId() throws SQLException {
-        /*
-        String sql = "SELECT id FROM Client ORDER BY id DESC LIMIT 1";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-         */
         ResultSet resultSet = SQLUtil.execute("SELECT id FROM Client ORDER BY id DESC LIMIT 1");
 
         if (resultSet.next()) {
             return resultSet.getString("id");
         } else {
-            return null; // No client ID found in the database
+            return null;
         }
     }
 
     public  boolean update(Client entity) throws SQLException {
-        /*
-        String sql = "UPDATE Client SET name = ?, email = ?, phone = ?, address = ?, check_in = ?, check_out = ? WHERE id = ?";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, client.getName());
-        pstm.setObject(2, client.getEmail());
-        pstm.setObject(3, client.getPhone());
-        pstm.setObject(4, client.getAddress());
-        pstm.setObject(5, client.getCheckIn());
-        pstm.setObject(6, client.getCheckOut());
-        pstm.setObject(7, client.getId());
-
-        return pstm.executeUpdate() > 0;
-
-         */
         return  SQLUtil.execute("UPDATE Client SET name = ?, email = ?, phone = ?, address = ?, check_in = ?, check_out = ? WHERE id = ?",
                 entity.getName(),
                 entity.getEmail(),
@@ -87,30 +50,12 @@ public class ClientDaoImpl implements ClientDAO {
     }
 
     public  boolean delete(String clientId) throws SQLException {
-        /*
-        String sql = "DELETE FROM Client WHERE id = ?";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, clientId);
-
-        return pstm.executeUpdate() > 0;
-
-         */
         return SQLUtil.execute("DELETE FROM Client WHERE id = ?",clientId);
     }
 
     public  Client search(String clientId) throws SQLException {
-        /*
-        String sql = "SELECT * FROM Client WHERE id = ?";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, clientId); // Use setString instead of setObject for String parameters
-
-        ResultSet resultSet = pstm.executeQuery();
-
-         */
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM Client WHERE id = ?",clientId);
         if (resultSet.next()) {
             String id = resultSet.getString(1);
@@ -130,14 +75,7 @@ public class ClientDaoImpl implements ClientDAO {
         }
     }
     public  List<Client> getAll() throws SQLException {
-        /*
-        String sql = "SELECT * FROM Client";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-         */
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM Client");
 
         List<Client> clientList = new ArrayList<>();
@@ -158,14 +96,7 @@ public class ClientDaoImpl implements ClientDAO {
 
 
     public  List<String> getIds() throws SQLException {
-        /*
-        String sql = "SELECT id FROM Client";
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-         */
 
         ResultSet resultSet = SQLUtil.execute("SELECT id FROM Client");
         List<String> mtIDList = new ArrayList<>();
@@ -177,14 +108,7 @@ public class ClientDaoImpl implements ClientDAO {
     }
 
     public  String getLastId() throws SQLException {
-        /*
 
-        String sql = "SELECT id FROM Client ORDER BY id DESC LIMIT 1";
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
-         */
         ResultSet resultSet = SQLUtil.execute("SELECT id FROM Client ORDER BY id DESC LIMIT 1");
 
         if (resultSet.next()) {

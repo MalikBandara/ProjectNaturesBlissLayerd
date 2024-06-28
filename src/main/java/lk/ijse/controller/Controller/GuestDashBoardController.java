@@ -51,7 +51,7 @@ public class GuestDashBoardController {
     @FXML
     private Button btnLogOUt;
 
-    //PackageDaoImpl PackageDaoImpl = new PackageDaoImpl();
+
     PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
 
     @FXML
@@ -130,13 +130,13 @@ public class GuestDashBoardController {
             Stage stage = (Stage) btnLogOUt.getScene().getWindow();
             stage.setTitle("Welcome Form");
 
-            // Animate the exit of the welcome page
+
             Timeline exitTimeline = new Timeline(
                     new KeyFrame(Duration.seconds(1),
                             new KeyValue(btnLogOUt.translateXProperty(), -btnLogOUt.getWidth(), Interpolator.EASE_BOTH))
             );
             exitTimeline.setOnFinished(e -> {
-                // Animate the entrance of the service page
+
                 double sceneWidth = stage.getScene().getWidth(); // or any other suitable width
                 Loginpanel.translateXProperty().set(sceneWidth);
                 stage.getScene().setRoot(Loginpanel);

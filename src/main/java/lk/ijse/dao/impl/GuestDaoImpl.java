@@ -64,7 +64,7 @@ public class GuestDaoImpl implements GuestDAO {
         }
     }
 
-    //..............................................................................................................
+
     public  boolean changePassword(String id, String password) throws SQLException {
 
         return SQLUtil.execute("UPDATE Guest SET password= ? WHERE identityDetails =?",password,id);

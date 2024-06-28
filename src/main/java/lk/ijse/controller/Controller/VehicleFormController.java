@@ -78,9 +78,6 @@ public class VehicleFormController {
     @FXML
     private Button vehsave;
 
-    //VehicleDAO vehicleDAO = new VehicleDaoImpl();
-
-    //EmployeeDaoImpl EmployeeDaoImpl = new EmployeeDaoImpl();
 
     VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.VEHICLE);
 

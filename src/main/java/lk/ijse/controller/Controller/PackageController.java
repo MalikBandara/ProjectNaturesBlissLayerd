@@ -81,8 +81,6 @@ public class PackageController {
     private TextField txtPrice;
 
 
-    //PackageDAO PackageDaoImpl =new PackageDaoImpl();
-
     PackageBO packageBO = (PackageBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.PACKAGE);
 
     public void initialize(){
@@ -124,16 +122,16 @@ public class PackageController {
 
     private String generateNextPackageId(String lastId) {
         if (lastId == null || lastId.isEmpty()) {
-            return "P001"; // Default ID if no packages exist
+            return "P001";
         }
 
-        // Extracting the numeric part of the lastId
+
         int num = Integer.parseInt(lastId.substring(1)); // Assuming "P" prefix
 
         // Incrementing the numeric part
         num++;
 
-        // Formatting the numeric part to ensure it has three digits
+
         String paddedNum = String.format("%03d", num);
 
         return "P" + paddedNum;

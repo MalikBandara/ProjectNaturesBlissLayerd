@@ -55,8 +55,8 @@ public class PaymentDaoImpl implements PaymentDAO {
             String payid = resultSet.getString(1);
             String amount = resultSet.getString(2);
             String method = resultSet.getString(3);
-            String paidDate = resultSet.getString(4); // Directly retrieve as double
-            String Status = resultSet.getString(5); // Directly retrieve as double
+            String paidDate = resultSet.getString(4);
+            String Status = resultSet.getString(5);
 
             Payment pkg = new Payment(payid, amount, method, paidDate ,Status);
 
@@ -86,13 +86,7 @@ public class PaymentDaoImpl implements PaymentDAO {
         }
     }
     public boolean PaymentIdStatusForBooking(String payid) throws SQLException {
-        /*
-        String paymentUpdateSql = "UPDATE payment SET method = 'Paid' WHERE payId = ?";
-        PreparedStatement paymentUpdatePstm = connection.prepareStatement(paymentUpdateSql);
-        paymentUpdatePstm.setString(1, payid);
-        int paymentUpdateResult = paymentUpdatePstm.executeUpdate();
 
-         */
         return SQLUtil.execute("UPDATE payment SET method = 'Paid' WHERE payId = ?",payid);
     }
 }

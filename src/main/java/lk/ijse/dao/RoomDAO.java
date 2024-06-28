@@ -2,6 +2,7 @@ package lk.ijse.dao;
 
 import lk.ijse.dao.custom.CrudDAO;
 
+import lk.ijse.entity.Reservation;
 import lk.ijse.entity.Room;
 
 import java.sql.SQLException;
@@ -12,4 +13,9 @@ public interface RoomDAO extends CrudDAO<Room> {
 
 
     int getRoomsCount() throws SQLException;
+
+
+
+
+    void UpdateReservationStatus(String roomid) throws SQLException;
 }

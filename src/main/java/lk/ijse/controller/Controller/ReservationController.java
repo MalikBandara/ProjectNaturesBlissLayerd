@@ -17,12 +17,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.bo.ReservationBO;
+import lk.ijse.bo.custom.BOFactory;
+import lk.ijse.bo.custom.BOTypes;
 import lk.ijse.db.DBConnection;
-import lk.ijse.dto.Reservation;
-import lk.ijse.dto.RoomDTO;
+import lk.ijse.dto.ReservationDTO;
 import lk.ijse.dto.tm.RoomTm;
-import lk.ijse.dao.impl.Reservationepo;
+import lk.ijse.dao.impl.ReservationDaoImpl;
 import lk.ijse.dao.impl.RoomDaoImpl;
+import lk.ijse.entity.Reservation;
 import lk.ijse.entity.Room;
 import lk.ijse.util.Regex;
 import lk.ijse.util.TextFields;
@@ -96,11 +99,18 @@ public class ReservationController implements Initializable {
 
     RoomDaoImpl RoomDaoImpl = new RoomDaoImpl();
 
+   // ReservationDaoImpl ReservationDaoImpl = new ReservationDaoImpl();
+
+    ReservationBO reservationBO = (ReservationBO) BOFactory.getBoFactory().getBOTYpes(BOTypes.RESERVATION);
 
 
-    private void generateNewReservationId() {
+
+
+
+
+    public void generateNewReservationId() {
         try {
-            String lastId = Reservationepo.getLastReservationId();
+            String lastId = reservationBO.getLastReservationId();
             String newId = generateNextId(lastId);
             ResID.setText(newId);
         } catch (SQLException e) {
@@ -108,13 +118,15 @@ public class ReservationController implements Initializable {
         }
     }
 
-    private String generateNextId(String lastId) {
+    public String generateNextId(String lastId) {
         if (lastId == null || lastId.isEmpty()) {
-            return "RE001"; // Default ID if no reservations exist
+            return "RE001";
+            // Default ID if no reservations exist
         }
 
         // Extracting the numeric part of the lastId
-        int num = Integer.parseInt(lastId.substring(2)); // Assuming "RE" prefix
+        int num = Integer.parseInt(lastId.substring(2));
+        // Assuming "RE" prefix
 
         // Incrementing the numeric part
         num++;
@@ -126,7 +138,7 @@ public class ReservationController implements Initializable {
     }
 
 
-    private void loadAllRooms() {
+    public void loadAllRooms() {
 
         ObservableList<RoomTm> obList = FXCollections.observableArrayList();
 
@@ -166,6 +178,7 @@ public class ReservationController implements Initializable {
 
     @FXML
     void ReservationONAction(ActionEvent event) throws SQLException {
+
         String guestId = ResID.getText();
         String guestname = GuestName.getText();
         String checkin = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -174,8 +187,7 @@ public class ReservationController implements Initializable {
         String noofGuest = NoOfGuest.getText();
         String room = cmbRoom.getValue();
 
-        if (guestId.isEmpty() || guestname.isEmpty() || checkin.isEmpty() ||
-                checkout.isEmpty() || type.isEmpty() || noofGuest.isEmpty() || room.isEmpty()) {
+        if (guestId.isEmpty() || guestname.isEmpty() || checkin.isEmpty() || checkout.isEmpty() || type.isEmpty() || noofGuest.isEmpty() || room.isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please fill all fields").show();
             return;
         }
@@ -186,10 +198,10 @@ public class ReservationController implements Initializable {
             return;
         }
 
-        Reservation reservation = new Reservation(guestId, guestname, checkin, checkout, type, noofGuest, room);
+        ReservationDTO reservation = new ReservationDTO(guestId, guestname, checkin, checkout, type, noofGuest, room);
 
         try {
-            boolean isSaved = Reservationepo.saveReservation(reservation);
+            boolean isSaved = reservationBO.SaveReservation(reservation);
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Reservation saved successfully!").show();
                 loadAllRooms();
@@ -200,28 +212,21 @@ public class ReservationController implements Initializable {
     }
 
 
-    private boolean isRoomReserved(String roomId) throws SQLException {
-        String sql = "SELECT * FROM Reservation WHERE Room_id = ?";
+    public boolean isRoomReserved(String roomId) throws SQLException {
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, roomId);
-        ResultSet resultSet = pstm.executeQuery();
+        boolean roomReserved = reservationBO.isRoomReservedForReservation(roomId);
+        return roomReserved;
 
-        return resultSet.next(); // Returns true if the room is already booked, false otherwise
     }
 
-    private boolean isRoomIdBooked(String roomId) throws SQLException {
-        String sql = "SELECT * FROM Room WHERE Room_id = ? AND Status = 'Booked'";
+    public boolean isRoomIdBooked(String roomId) throws SQLException {
 
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, roomId);
-        ResultSet resultSet = pstm.executeQuery();
 
-        return resultSet.next(); // Returns true if the room is already booked, false otherwise
+        boolean roomIdRoom = reservationBO.isRoomIdReservedForRoom(roomId);
+        return roomIdRoom;
+
     }
-    private void setCellValueFactory() {
+    public void setCellValueFactory() {
 
 
 
@@ -276,7 +281,7 @@ public class ReservationController implements Initializable {
         }
 
     }
-    private void getRoomId() {
+    public void getRoomId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
             List<String> rIDList = RoomDaoImpl.getIds();

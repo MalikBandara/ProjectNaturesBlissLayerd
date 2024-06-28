@@ -3,13 +3,9 @@ package lk.ijse.dao.impl;
 import javafx.scene.control.Alert;
 import lk.ijse.dao.RoomDAO;
 import lk.ijse.dao.custom.SQLUtil;
-import lk.ijse.db.DBConnection;
-import lk.ijse.dto.Booking;
-import lk.ijse.dto.RoomDTO;
+import lk.ijse.entity.Reservation;
 import lk.ijse.entity.Room;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,6 +36,12 @@ public class RoomDaoImpl implements RoomDAO {
         }
         return 0;
     }
+
+    @Override
+    public void UpdateReservationStatus(String roomid) throws SQLException {
+        SQLUtil.execute("UPDATE Room SET Status = 'Reservation Booked' WHERE Room_id = ?",roomid);
+    }
+
 
     public  boolean update(Room entity) throws SQLException {
 
@@ -111,4 +113,5 @@ public class RoomDaoImpl implements RoomDAO {
             return null;
         }
     }
+
 }

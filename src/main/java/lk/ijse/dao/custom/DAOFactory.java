@@ -35,6 +35,8 @@ public class DAOFactory {
                 return new EmployeeDaoImpl();
             case ADMIN:
                 return new AdminDaoImpl();
+            case RESERVATION:
+                return new ReservationDaoImpl();
             default:
                 return null;
 
